@@ -1,0 +1,15 @@
+{
+  "name": "wheeloffortune",
+  "version": "1.0.0",
+  "description": "Wheel of Fortune for Family Game Night",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/js/server.js"
+  },
+  "author": "Menachem Tsadok",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

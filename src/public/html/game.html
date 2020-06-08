@@ -1,0 +1,208 @@
+<html>
+    <head>
+        <title>HTML5 Canvas Winning Wheel</title>
+        <link rel="stylesheet" href="/css/main.css" type="text/css" />
+        <!-- <script type="text/javascript" src="/Winwheel.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script> -->   
+
+    </head>
+    <body>
+        <div>
+            Wheel Of Fortune
+            <div id="grid">
+                <div id="row1">
+                    <img src="/assets/tile.png" style="visibility:hidden">
+                    <img id="cell1" src="/assets/tile.png">
+                    <img id="cell2" src="/assets/tile.png">
+                    <img id="cell3" src="/assets/tile.png">
+                    <img id="cell4" src="/assets/tile.png">
+                    <img id="cell5" src="/assets/tile.png">
+                    <img id="cell6" src="/assets/tile.png">
+                    <img id="cell7" src="/assets/tile.png">
+                    <img id="cell8" src="/assets/tile.png">
+                    <img id="cell9" src="/assets/tile.png">
+                    <img id="cell10" src="/assets/tile.png">
+                    <img id="cell11" src="/assets/tile.png">
+                    <img id="cell12" src="/assets/tile.png">
+                </div>
+                <div id="row2">
+                    <img id="cell1" src="/assets/tile.png">
+                    <img id="cell2" src="/assets/tile.png">
+                    <img id="cell3" src="/assets/tile.png">
+                    <img id="cell4" src="/assets/tile.png">
+                    <img id="cell5" src="/assets/tile.png">
+                    <img id="cell6" src="/assets/tile.png">
+                    <img id="cell7" src="/assets/tile.png">
+                    <img id="cell8" src="/assets/tile.png">
+                    <img id="cell9" src="/assets/tile.png">
+                    <img id="cell10" src="/assets/tile.png">
+                    <img id="cell11" src="/assets/tile.png">
+                    <img id="cell12" src="/assets/tile.png">
+                    <img id="cell13" src="/assets/tile.png">
+                    <img id="cell14" src="/assets/tile.png">
+                </div>
+                <div id="row3">
+                    <img id="cell1" src="/assets/tile.png">
+                    <img id="cell2" src="/assets/tile.png">
+                    <img id="cell3" src="/assets/tile.png">
+                    <img id="cell4" src="/assets/tile.png">
+                    <img id="cell5" src="/assets/tile.png">
+                    <img id="cell6" src="/assets/tile.png">
+                    <img id="cell7" src="/assets/tile.png">
+                    <img id="cell8" src="/assets/tile.png">
+                    <img id="cell9" src="/assets/tile.png">
+                    <img id="cell10" src="/assets/tile.png">
+                    <img id="cell11" src="/assets/tile.png">
+                    <img id="cell12" src="/assets/tile.png">
+                    <img id="cell13" src="/assets/tile.png">
+                    <img id="cell14" src="/assets/tile.png">
+                </div>
+                <div id="row4">
+                    <img src="/assets/tile.png" style="visibility:hidden">
+                    <img id="cell1" src="/assets/tile.png">
+                    <img id="cell2" src="/assets/tile.png">
+                    <img id="cell3" src="/assets/tile.png">
+                    <img id="cell4" src="/assets/tile.png">
+                    <img id="cell5" src="/assets/tile.png">
+                    <img id="cell6" src="/assets/tile.png">
+                    <img id="cell7" src="/assets/tile.png">
+                    <img id="cell8" src="/assets/tile.png">
+                    <img id="cell9" src="/assets/tile.png">
+                    <img id="cell10" src="/assets/tile.png">
+                    <img id="cell11" src="/assets/tile.png">
+                    <img id="cell12" src="/assets/tile.png">
+                </div>
+              </div>
+              <button onclick="startGame();">Start game</button>
+              <img class="down" id="down" src="/assets/down.png" width="30"/>
+              <img class="wheel" id="wheel" src="/assets/wheel.png" data-rotation="0" width="400" height="400" onClick="startSpin();" />
+            <table cellpadding="0" cellspacing="0">
+            <tr>
+                <td>                        
+                    <div class="power_controls">
+                        <br />
+                        <br />
+                        <!-- <table class="power" cellpadding="10" cellspacing="0">
+                            <tr>
+                                <th>Power</th>
+                            </tr>
+                            <tr>
+                                <td width="78" id="pw3" onClick="powerSelected(3);">High</td>
+                            </tr>
+                            <tr>
+                                <td id="pw2" onClick="powerSelected(2);">Med</td>
+                            </tr>
+                            <tr>
+                                <td id="pw1" onClick="powerSelected(1);">Low</td>
+                            </tr>
+                        </table> -->
+                        <br />
+                        <img id="spin_button" src="/assets/spin_on.png" alt="Spin" onClick="spin();" />
+                        <br /><br />
+                    </div>
+                </td>
+                <!-- <td width="438" height="582" class="the_wheel" valign="center">
+                    <canvas id="canvas" width="434" height="434">
+                        <p style="{color: white}" align="center">Sorry, your browser doesn't support canvas. Please try another.</p>
+                    </canvas> 
+                </td> -->
+            </tr>
+        </table>
+        <script>
+            var Wheel = (function () {
+                var wheel = document.getElementById('wheel'),
+                    wheelValues = [2500, 295, 0, 385, 220, 595, -1, 295, 375, 180, 0, 385, 295, 510, 375, 770, 460, 640, -1, 295, 580, 280, 220, 265],
+                    spinTimeout = false,
+                    spinModifier = function () {
+                        return Math.random() * 10 + 20;
+                    },
+                    modifier = spinModifier(),
+                    slowdownSpeed = .1,
+                    prefix = (function () {
+                        if (document.body.style.MozTransform !== undefined) {
+                            return "MozTransform";
+                        } else if (document.body.style.WebkitTransform !== undefined) {
+                            return "WebkitTransform";
+                        } else if (document.body.style.OTransform !== undefined) {
+                            return "OTransform";
+                        } else {
+                            return "";
+                        }
+                    }()),
+                    degreeToRadian = function (deg) {
+                        return deg / (Math.PI * 180);
+                    };
+
+                function Wheel() {};
+
+                Wheel.prototype.rotate = function (degrees) {
+                    var val = "rotate(-" + degrees + "deg)";
+                    if (wheel.style[prefix] != undefined) wheel.style[prefix] = val;
+                    var rad = degreeToRadian(degrees % 360),
+                        filter = "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=" + rad + ", M12=-" + rad + ", M21=" + rad + ", M22=" + rad + ")";
+                    if (wheel.style["filter"] != undefined) wheel.style["filter"] = filter;
+                    wheel.setAttribute("data-rotation", degrees);
+                };
+
+                Wheel.prototype.spin = function (callback, amount) {
+                    var _this = this;
+                    clearTimeout(spinTimeout);
+                    modifier -= slowdownSpeed;
+                    if(modifier <= 2 && slowdownSpeed > .005) {
+                        slowdownSpeed -= .005;
+                        console.log("Mod " + modifier + " slow " +slowdownSpeed);
+                    }
+                    if(slowdownSpeed <= .005) {
+                        slowdownSpeed = .005;
+                    }
+                    if(modifier < 0) {
+                        modifier = 0;
+                    }
+                    if (amount === undefined) {
+                        amount = parseInt(wheel.getAttribute('data-rotation'));
+                    }
+                    this.rotate(amount);
+                    if (modifier > 0) {
+                        spinTimeout = setTimeout(function () {
+                            _this.spin(callback, amount + modifier);
+                        }, 10);
+                    } else {
+                        slowdownSpeed = .1; 
+                        var dataRotation = parseInt(wheel.getAttribute('data-rotation'));
+                        modifier = spinModifier();
+                        var divider = 360 / wheelValues.length;
+                        var wheelValue = wheelValues[Math.floor(Math.round((dataRotation+7.5) % 360) / divider)];
+                        if(wheelValue == -1 || wheelValue == 24) {
+                            wheelValue = 0
+                        }
+                        switch (wheelValue) {
+                            case 0:
+                                return callback(0);
+                            case -1:
+                                return callback("Free Spin");
+                            case -2:
+                                return callback("Lose a turn");
+                            default:
+                                return callback(wheelValue);
+                        }
+                    }
+                };
+
+                return Wheel;
+            })();    
+
+            function spin() {
+                console.log("Spinning");
+                var wheel = new Wheel;
+                wheel.spin(function(spinVal){
+                    alert(spinVal)
+                });
+            }
+
+            function startGame() {
+
+            }
+            
+        </script>
+    </body>
+</html>

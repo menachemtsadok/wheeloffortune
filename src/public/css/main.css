@@ -1,0 +1,24 @@
+.wheel {
+    position: absolute;
+    top: 100px;
+    left: 900px;
+    z-index: 1;
+}
+.down {
+    position: absolute;
+    top: 85px;
+    left: 1085px;
+    z-index: 2;
+}
+/* .wheel {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+.down {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 2;
+} */

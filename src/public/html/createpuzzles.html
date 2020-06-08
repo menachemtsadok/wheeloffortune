@@ -1,0 +1,61 @@
+<html>
+    <body>
+        <div id="puzzle1">
+            Puzzle 1: <br><br>
+            <label for="puzzle1row1">Row 1:</label>
+            <input type="text" id="puzzle1row1" name="puzzle1row1" maxlength="12"><br><br>
+            <label for="puzzle1row2">Row 2:</label>
+            <input type="text" id="puzzle1row2" name="puzzle1row2" maxlength="14"><br><br>
+            <label for="puzzle1row3">Row 3:</label>
+            <input type="text" id="puzzle1row3" name="puzzle1row3" maxlength="14"><br><br>
+            <label for="puzzle1row4">Row 4:</label>
+            <input type="text" id="puzzle1row4" name="puzzle1row4" maxlength="12"><br><br>
+        </div>
+        <button onclick="addPuzzle();">Add Puzzle</button>
+        <button onclick="deletePuzzle();">Delete Last Puzzle</button>
+        <button onclick="createGame();">Create Game</button>
+        <script>
+            var i = 1;
+            function addPuzzle() {
+                var lastPuzzle = document.getElementById("puzzle"+i);
+                i += 1;
+                lastPuzzle.insertAdjacentHTML("afterend", 
+                "<div id=\"puzzle" + i +"\">Puzzle " + i + "<br><br>" + 
+                    "<label for=\"puzzle" + i + "row1\">Row 1:</label>" +
+                    "<input type=\"text\" id=\"puzzle" + i + "row1\" name=\"puzzle" + i + "row1\" maxlength=\"12\"><br><br>" +
+                    "<label for=\"puzzle" + i + "row2\">Row 2:</label>" +
+                    "<input type=\"text\" id=\"puzzle" + i + "row2\" name=\"puzzle" + i + "row2\" maxlength=\"14\"><br><br>" +
+                    "<label for=\"puzzle" + i + "row3\">Row 3:</label>" +
+                    "<input type=\"text\" id=\"puzzle" + i + "row3\" name=\"puzzle" + i + "row3\" maxlength=\"14\"><br><br>" +
+                    "<label for=\"puzzle" + i + "row4\">Row 4:</label>" +
+                    "<input type=\"text\" id=\"puzzle" + i + "row4\" name=\"puzzle" + i + "row4\" maxlength=\"12\"><br><br>" +
+                    "</div>");
+            }
+            function deletePuzzle() {
+                var lastPuzzle = document.getElementById("puzzle"+i);
+                lastPuzzle.remove();
+                i -= 1;
+            }
+            function createGame() {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log("Response: " + this.responseText + " response end");
+                    }
+                };
+                xhr.open("POST", "http://localhost:3000/puzzle", true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                const puzzles = {};
+                for(var j = 1; j <= i; j++) {
+                    puzzles['puzzle'+j]= [document.getElementById('puzzle' + j + 'row1').value, document.getElementById('puzzle' + j +'row2').value, document.getElementById('puzzle' + j +'row3').value, document.getElementById('puzzle' + j +'row4').value]
+                }
+                // xhr.send(JSON.stringify({
+                //     puzzle1: [document.getElementById('puzzle1row1').value, document.getElementById('puzzle1row2').value, document.getElementById('puzzle1row3').value, document.getElementById('puzzle1row4').value]
+                // }));
+                xhr.send(JSON.stringify(puzzles));
+                //window.location.href = "/html/game.html";
+            }
+        </script>
+    </body>
+    
+</html>
