@@ -8,8 +8,11 @@ const server       = require('http').createServer(app);
 const io      = require('socket.io')(server);
 
 io.on('connection', client => {
-      client.on('event', data => { /* … */ });
+      console.log('a user conntent');
+      client.on('create',room => client.join(room));
+      client.on('event', data => { console.log('userconnte') });
       client.on('disconnect', () => { console.log("client disconnected") });
+      client.on('send_letter', data=> io.sockets.in(data.room).emit('letter_sent',data.letter));
     });
 
 
@@ -60,7 +63,8 @@ app.post('/puzzle', function(req, res) {
       // like req.body.token  req.body
       puzzles = req.body;
       console.log(puzzles)
-      res.send(currentPuzzle())
+      //Send base64 of current time
+      res.send(current);
 
   });
 // finally, start the server
